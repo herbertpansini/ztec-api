@@ -18,7 +18,6 @@ class UserSeeder extends Seeder
             'email' => 'herbertpansini@gmail.com',
             'password' => Hash::make('12345'),
             'role' => 'ROLE_ADMIN',
-            'device' => '',
         ]);
 
         DB::table('users')->insert([
@@ -26,7 +25,6 @@ class UserSeeder extends Seeder
             'email' => 'daniellepansini@gmail.com',
             'password' => Hash::make('12345'),
             'role' => 'ROLE_USER',
-            'device' => '',
         ]);
 
         DB::table('users')->insert([
@@ -34,7 +32,6 @@ class UserSeeder extends Seeder
             'email' => 'robertoclarindoandrade@gmail.com',
             'password' => Hash::make('12345'),
             'role' => 'ROLE_USER',
-            'device' => '',
         ]);
     }
 }

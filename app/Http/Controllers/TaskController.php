@@ -12,14 +12,9 @@ class TaskController extends Controller
 {
     use ApiResponser;
     
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
     public function __construct()
     {
-        //
+        
     }
 
     //
@@ -83,11 +78,41 @@ class TaskController extends Controller
 
     public function store(Request $request)
     {
-        return response()->json(Task::create($request->all()), Response::HTTP_CREATED);
+        $rules = [
+            'company_id' => 'required',
+            'user_id' => 'required',
+            'description' => 'required|max:255',
+            'scheduled_datetime' => 'required',
+            'value' => 'required'
+        ];
+
+        $this->validate($request, $rules);
+
+        $created = Task::create($request->all());
+
+        $result = Task::join('users', 'users.id', '=', 'tasks.user_id')
+                        ->join('companies', 'companies.id', '=', 'tasks.company_id')
+                        ->where('tasks.id', '=', $created->id)
+                        ->select('tasks.id AS id', 'company_id', 'user_id', 'description',
+                                'scheduled_datetime', 'value', 'users.name AS user_name',
+                                'users.device_token AS device_token', 'companies.name as company_name')
+                        ->first();
+
+        return response()->json($result, Response::HTTP_CREATED);
     }
 
     public function update(int $id, Request $request)
     {
+        $rules = [
+            'company_id' => 'required',
+            'user_id' => 'required',
+            'description' => 'required|max:255',
+            'scheduled_datetime' => 'required',
+            'value' => 'required'
+        ];
+
+        $this->validate($request, $rules);
+
         $task = Task::find($id);
         if (is_null($task))
         {

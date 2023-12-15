@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->enum('role', ['ROLE_ADMIN', 'ROLE_USER'])->default('ROLE_USER');
-            $table->string('device')->nullable();
+            $table->string('device_token')->nullable();
         });
     }
 

@@ -32,7 +32,7 @@ class AuthController extends Controller
         $this->validate($request, [
             'email' => 'required|email',
             'password' => 'required',
-            'device' => 'required'
+            'device_token' => 'required'
         ]);
 
         $user = User::where('email', $request->email)->first();
@@ -42,9 +42,9 @@ class AuthController extends Controller
             return response()->json('Usuário ou senha inválidos!', 401);
         }
 
-        if ($request->device !== $user->device)
+        if ($request->device_token !== $user->device_token)
         {
-            $user->device = $request->device;
+            $user->device_token = $request->device_token;
             $user->save();
         }
 
@@ -69,7 +69,7 @@ class AuthController extends Controller
             'name' => 'required|max:255',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:5|confirmed',
-            'device' => 'required'
+            'device_token' => 'required'
         ];
 
         $this->validate($request, $rules);
